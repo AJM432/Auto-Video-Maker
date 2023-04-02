@@ -19,7 +19,7 @@ def authenticate():
     )
     return reddit
 
-def scrape_videos(limit=10, duration=60, subreddit="space"):
+def scrape_videos(limit=10, duration=60, subreddit="physics"):
     reddit = authenticate()
     vids = []
     for submission in reddit.subreddit(subreddit).hot(limit=limit):
@@ -31,7 +31,7 @@ def scrape_videos(limit=10, duration=60, subreddit="space"):
     return vids
 
 def download_videos():
-    vids = scrape_videos(limit=30)
+    vids = scrape_videos(limit=200)
     down = Downloader(max_q=True)
     down.path = os.path.join(os.getcwd(), "videos")
     down.auto_max = True
