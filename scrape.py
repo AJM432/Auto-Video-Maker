@@ -13,7 +13,7 @@ def authenticate():
     reddit = praw.Reddit(
         client_id=CLIENT_ID,
         client_secret=SECRET_TOKEN,
-        user_agent="AutoVideo 1.0 by /u/-AJM-",
+        user_agent=f"AutoVideo 1.0 by /u/{user}",
         username=user,
         password=password,
     )
