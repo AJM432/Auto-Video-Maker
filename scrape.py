@@ -3,6 +3,7 @@ from redvid import Downloader
 from dotenv import dotenv_values
 import os
 import gtts
+from config import SUBREDDIT, SCRAPE_LIMIT, MAX_VIDEO_DURATION
 
 def authenticate():
     config = dotenv_values(".env")
@@ -20,7 +21,7 @@ def authenticate():
     )
     return reddit
 
-def scrape_videos(limit=10, duration=60, subreddit="physics"):
+def scrape_videos(limit=SCRAPE_LIMIT, duration=60, subreddit=SUBREDDIT):
     reddit = authenticate()
     vids = []
     for submission in reddit.subreddit(subreddit).hot(limit=limit):
@@ -32,7 +33,7 @@ def scrape_videos(limit=10, duration=60, subreddit="physics"):
     return vids
 
 def download_videos():
-    vids = scrape_videos(limit=50)
+    vids = scrape_videos(duration=MAX_VIDEO_DURATION)
     down = Downloader(max_q=True)
     down.auto_max = True
     down.max_s = 3 * (1 << 20) # wont exceed 3mb
