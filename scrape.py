@@ -2,6 +2,7 @@ import praw
 from redvid import Downloader
 from dotenv import dotenv_values
 import os
+import gtts
 
 def authenticate():
     config = dotenv_values(".env")
@@ -31,14 +32,18 @@ def scrape_videos(limit=10, duration=60, subreddit="physics"):
     return vids
 
 def download_videos():
-    vids = scrape_videos(limit=200)
+    vids = scrape_videos(limit=50)
     down = Downloader(max_q=True)
-    down.path = os.path.join(os.getcwd(), "videos")
     down.auto_max = True
     down.max_s = 3 * (1 << 20) # wont exceed 3mb
     for vid in vids:
+        download_path = os.path.join(os.getcwd(), "videos", vid.id)
+        down.path = download_path
         down.url = vid.url
         down.download()
+
+        tts = gtts.gTTS(vid.title)
+        tts.save(os.path.join(download_path, f"{vid.id}.mp3"))
     return vids # keep info of clip origin
 
 if __name__ == '__main__':
